@@ -1,60 +1,67 @@
-import { Dropdown } from 'antd'
+import { useState } from 'react'
+import { Dropdown, message } from 'antd'
 import type { MenuProps } from 'antd'
 import dayjs from 'dayjs'
 import { ExportOutlined, FullscreenOutlined, ImportOutlined, EllipsisOutlined } from '@ant-design/icons'
 
 import Proxies from './Proxies/index'
+import { downloadFile, readFile } from './utils'
+import { StorageManager } from './utils/storage'
+import { Loading } from './components/Loading'
 import './App.less'
 
-export const strToBase64 = function (str: string) {
-  const bytes = new TextEncoder().encode(str)
-  const binString = Array.from(bytes, (byte) => String.fromCodePoint(byte)).join('')
-  return window.btoa(binString)
-}
-
-export const base64ToStr = function (base64: string) {
-  const binString = window.atob(base64)
-  const bytes = Uint8Array.from(binString, (char) => char.codePointAt(0) as number)
-  const decoder = new TextDecoder()
-  return decoder.decode(bytes)
-}
-
 export default function App() {
-  const onExport = () => {
-    const a = document.createElement('a')
-    const modes = localStorage.getItem('modes') as string
-    a.href = `data:,${strToBase64(modes)}`
-    a.download = `MetaSwitch-${dayjs().format('YYYY-MM-DD')}.txt`
-    a.click()
-  }
+  const [loading, setLoading] = useState(false)
 
-  const onImport = () => {
-    const input = document.createElement('input')
-    input.type = 'file'
-    input.accept = '.txt'
-    input.onchange = (e) => {
-      const file = (e.target as HTMLInputElement)?.files?.[0]
-      if (file) {
-        const reader = new FileReader()
-        reader.readAsText(file)
-        reader.onload = (e) => {
-          const modes = e.target?.result as string
-          localStorage.setItem('modes', base64ToStr(modes))
-          location.reload()
-        }
-      }
+  const handleExport = (): void => {
+    setLoading(true)
+    try {
+      const config = StorageManager.exportConfig()
+      const filename = `MetaSwitch-${dayjs().format('YYYY-MM-DD')}.txt`
+      downloadFile(config, filename)
+      message.success('配置导出成功')
+    } catch (error) {
+      console.error('Export failed:', error)
+      message.error('配置导出失败')
+    } finally {
+      setLoading(false)
     }
-    input.click()
   }
 
-  const items: MenuProps['items'] = [
+  const handleImport = async (): Promise<void> => {
+    setLoading(true)
+    try {
+      const config = await readFile()
+      StorageManager.importConfig(config)
+      message.success('配置导入成功')
+      // 延迟刷新页面以确保用户看到成功消息
+      setTimeout(() => {
+        window.location.reload()
+      }, 1000)
+    } catch (error) {
+      console.error('Import failed:', error)
+      message.error('配置导入失败，请检查文件格式')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const menuItems: MenuProps['items'] = [
     {
-      label: <a onClick={onExport}><ExportOutlined /> Export Config</a>,
-      key: '0',
+      label: (
+        <a onClick={handleExport}>
+          <ExportOutlined /> Export Config
+        </a>
+      ),
+      key: 'export',
     },
     {
-      label: <a onClick={onImport}><ImportOutlined /> Import Config</a>,
-      key: '1',
+      label: (
+        <a onClick={handleImport}>
+          <ImportOutlined /> Import Config
+        </a>
+      ),
+      key: 'import',
     },
   ]
 
@@ -63,13 +70,24 @@ export default function App() {
       <div className="head">
         <div className="title">Proxy MetaSwitch</div>
         <div className="action">
-          {location.pathname.includes('/popup.html') && <a className="fullscreen" href="./index.html" target="_blank" title="Expand to full tab"><FullscreenOutlined /></a>}
-          <Dropdown menu={{ items }} trigger={['click']}>
+          {location.pathname.includes('/popup.html') && (
+            <a 
+              className="fullscreen" 
+              href="./index.html" 
+              target="_blank" 
+              title="Expand to full tab"
+            >
+              <FullscreenOutlined />
+            </a>
+          )}
+          <Dropdown menu={{ items: menuItems }} trigger={['click']}>
             <EllipsisOutlined className="ellipsis" />
           </Dropdown>
         </div>
       </div>
-      <Proxies />
+      <Loading spinning={loading}>
+        <Proxies />
+      </Loading>
     </>
   )
 }

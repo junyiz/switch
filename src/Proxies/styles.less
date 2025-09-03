@@ -2,52 +2,68 @@
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 20px;
+  gap: 12px;
 
   &-item {
     cursor: pointer;
-    width: 96px;
-    height: 75px;
-    border-radius: 5px;
-    margin-right: 18px;
-    margin-bottom: 10px;
-    border: 0.5px solid #efefef;
+    width: 100px;
+    height: 80px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
     position: relative;
-    box-shadow: 0 2px 1px #00000008, 0 2px 1px #00000008;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     color: rgba(0, 0, 0, 0.88);
-
-    &:last-child {
-      margin-right: 0;
+    transition: all 0.2s ease;
+    background: #fff;
+    
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      transform: translateY(-1px);
+      border-color: #1890ff;
     }
 
+
     &-name {
-      font-size: 16px;
-      padding: 2px 8px 0;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 8px 0;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      height: 22px;
     }
 
     &-desc {
       color: #999;
       padding: 0 8px;
-      font-size: 12px;
-      margin-top: 5px;
-      margin-bottom: 5px;
+      font-size: 11px;
+      margin-top: 2px;
+      margin-bottom: 8px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      height: 16px;
     }
 
     &-btns {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      margin-top: 5px;
-      margin-bottom: 5px;
-      padding: 2px 8px 0;
+      justify-content: space-around;
+      padding: 0 8px 6px;
+      height: 24px;
+      
+      .anticon {
+        padding: 2px;
+        border-radius: 3px;
+        transition: all 0.2s ease;
+        
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.06);
+        }
+      }
     }
 
     &-new {
@@ -55,12 +71,32 @@
       justify-content: center;
       align-items: center;
       border-style: dashed;
+      border-color: #1890ff;
+      color: #1890ff;
+      
+      &:hover {
+        background-color: rgba(24, 144, 255, 0.06);
+      }
+      
+      .anticon {
+        font-size: 18px;
+      }
     }
   }
 
   &-item.enabled {
+    border-color: #1890ff;
+    background: linear-gradient(135deg, #e6f7ff 0%, #bae7ff 100%);
+    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.2);
+    
     .mode-item-name {
       color: #1890ff;
+      font-weight: 600;
+    }
+    
+    .mode-item-desc {
+      color: #1890ff;
+      opacity: 0.8;
     }
   }
 }

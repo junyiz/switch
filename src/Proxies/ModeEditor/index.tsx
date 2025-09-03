@@ -3,7 +3,10 @@ import { Form, Input, InputNumber, Select, Space } from 'antd'
 import { ModeRules } from '../types'
 import './styles.less'
 
-export default function ModeEditor({ value, onChange }: {
+export default function ModeEditor({
+  value,
+  onChange,
+}: {
   value: ModeRules
   onChange: (value: ModeRules) => void
 }) {
@@ -13,20 +16,20 @@ export default function ModeEditor({ value, onChange }: {
     const { fallbackProxy, bypassList } = value
     return {
       fallbackProxy,
-      bypassList: bypassList?.toString().replace(/,/g, '\n')
+      bypassList: bypassList?.toString().replace(/,/g, '\n'),
     }
   }, [value])
 
   useEffect(() => {
     form.setFieldsValue(initialValues())
   }, [value, form, initialValues])
-  
+
   function onValuesChange(_changedValues: unknown, allValues: ModeRules) {
     const { fallbackProxy, bypassList } = allValues
     onChange({
       fallbackProxy,
-      bypassList: bypassList?.toString().split('\n')
-    })
+      bypassList: bypassList?.toString().split('\n'),
+    } as ModeRules)
   }
 
   return (
@@ -44,7 +47,14 @@ export default function ModeEditor({ value, onChange }: {
             name={['fallbackProxy', 'scheme']}
             rules={[{ required: true, message: 'missing protocol' }]}
           >
-            <Select options={[{ value: 'http', label: 'HTTP' }, { value: 'https', label: 'HTTPS' }, { value: 'socks5', label: 'SOCKS5' }]} style={{ width: 150 }} />
+            <Select
+              options={[
+                { value: 'http', label: 'HTTP' },
+                { value: 'https', label: 'HTTPS' },
+                { value: 'socks5', label: 'SOCKS5' },
+              ]}
+              style={{ width: 150 }}
+            />
           </Form.Item>
           <Form.Item
             name={['fallbackProxy', 'host']}
@@ -60,11 +70,21 @@ export default function ModeEditor({ value, onChange }: {
           </Form.Item>
         </Space>
       </Form.Item>
-      <Form.Item name="bypassList" label="不代理的地址列表" extra={
-        <div style={{ color: '#999', fontSize: 12, marginTop: 8 }}>
-          不经过代理服务器的主机列表, 每行一个主机, 可使用通配符等匹配规则，详见 <a href="https://developer.chrome.com/docs/extensions/reference/api/proxy?#proxy_rules" target="_blank">Google 文档</a> 
-        </div>
-      }>
+      <Form.Item
+        name="bypassList"
+        label="不代理的地址列表"
+        extra={
+          <div style={{ color: '#999', fontSize: 12, marginTop: 8 }}>
+            不经过代理服务器的主机列表, 每行一个主机, 可使用通配符等匹配规则，详见{' '}
+            <a
+              href="https://developer.chrome.com/docs/extensions/reference/api/proxy?#proxy_rules"
+              target="_blank"
+            >
+              Google 文档
+            </a>
+          </div>
+        }
+      >
         <Input.TextArea rows={5} />
       </Form.Item>
     </Form>
