@@ -30,13 +30,10 @@ const Proxies = memo(() => {
       <div className="mode">
         {modes.map((mode) => (
           <div className={`mode-item${mode.enabled ? ' enabled' : ''}`} key={mode.name}>
-            <div
-              className="mode-item-name"
-              onClick={() => handleProxyChange({ value: mode, isSwitch: true })}
-            >
-              {mode.name}
+            <div onClick={() => handleProxyChange({ value: mode, isSwitch: true })}>
+              <div className="mode-item-name">{mode.name}</div>
+              <div className="mode-item-desc">{mode.desc}</div>
             </div>
-            <div className="mode-item-desc">{mode.desc}</div>
             <div className="mode-item-btns">
               <CheckOutlined
                 style={mode.enabled ? { color: '#1890ff' } : {}}
