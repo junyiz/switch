@@ -5,7 +5,7 @@
 ## 安装
 
 ### Chrome 网上应用店安装
-1. 访问 [Chrome 网上应用店](https://chrome.google.com/webstore)
+1. 访问 [Chrome 网上应用店](https://chromewebstore.google.com/detail/proxy-metaswitch/bjanjgcahjjmbmphipghbffhiaiopljn)
 2. 搜索 "MetaSwitch"
 3. 点击 "添加到 Chrome"
 

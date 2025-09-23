@@ -27,7 +27,7 @@ MetaSwitch 是一个功能强大的 Chrome 浏览器扩展，帮助您轻松管�
 ## 快速开始
 
 ### 安装扩展
-1. 从 [Chrome 网上应用店](https://chrome.google.com/webstore) 安装 MetaSwitch
+1. 从 [Chrome 网上应用店](https://chromewebstore.google.com/detail/proxy-metaswitch/bjanjgcahjjmbmphipghbffhiaiopljn) 安装 MetaSwitch
 2. 或手动加载开发者版本
 
 ### 基本使用
