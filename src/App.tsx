@@ -2,7 +2,13 @@ import { useState } from 'react'
 import { Dropdown, message } from 'antd'
 import type { MenuProps } from 'antd'
 import dayjs from 'dayjs'
-import { ExportOutlined, FullscreenOutlined, ImportOutlined, EllipsisOutlined } from '@ant-design/icons'
+import {
+  ExportOutlined,
+  FullscreenOutlined,
+  ImportOutlined,
+  QuestionOutlined,
+  EllipsisOutlined,
+} from '@ant-design/icons'
 
 import Proxies from './Proxies/index'
 import { downloadFile, readFile } from './utils'
@@ -63,6 +69,14 @@ export default function App() {
       ),
       key: 'import',
     },
+    {
+      label: (
+        <a href="https://junyiz.github.io/MetaSwitch/" target="_blank">
+          <QuestionOutlined /> Help Docs
+        </a>
+      ),
+      key: 'help',
+    },
   ]
 
   return (
@@ -71,10 +85,10 @@ export default function App() {
         <div className="title">Proxy MetaSwitch</div>
         <div className="action">
           {location.pathname.includes('/popup.html') && (
-            <a 
-              className="fullscreen" 
-              href="./index.html" 
-              target="_blank" 
+            <a
+              className="fullscreen"
+              href="./index.html"
+              target="_blank"
               title="Expand to full tab"
             >
               <FullscreenOutlined />
